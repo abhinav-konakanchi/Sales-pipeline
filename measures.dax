@@ -1,0 +1,43 @@
+// ============================================================
+// Sales Pipeline Dashboard - DAX measures
+// All measures live in a table called _Measures.
+// Source tables: sales_pipeline, accounts, products, sales_teams
+// ============================================================
+
+// Count of distinct deals (opportunities)
+Total Opportunities =
+DISTINCTCOUNT ( sales_pipeline[opportunity_id] )
+
+// Deals that closed as won
+Won Deals =
+CALCULATE ( [Total Opportunities], sales_pipeline[deal_stage] = "Won" )
+
+// Deals that closed as lost
+Lost Deals =
+CALCULATE ( [Total Opportunities], sales_pipeline[deal_stage] = "Lost" )
+
+// Share of closed deals that were won (open deals are excluded)
+Win Rate =
+DIVIDE ( [Won Deals], [Won Deals] + [Lost Deals] )
+
+// Revenue from won deals only
+Revenue =
+CALCULATE ( SUM ( sales_pipeline[close_value] ), sales_pipeline[deal_stage] = "Won" )
+
+// Average value of a won deal
+Avg Deal Size =
+DIVIDE ( [Revenue], [Won Deals] )
+
+// Deals still in progress
+Open Pipeline =
+CALCULATE (
+    [Total Opportunities],
+    sales_pipeline[deal_stage] IN { "Prospecting", "Engaging" }
+)
+
+// Average days from first engagement to close, won deals only
+Avg Sales Cycle (days) =
+AVERAGEX (
+    FILTER ( sales_pipeline, sales_pipeline[deal_stage] = "Won" ),
+    DATEDIFF ( sales_pipeline[engage_date], sales_pipeline[close_date], DAY )
+)
