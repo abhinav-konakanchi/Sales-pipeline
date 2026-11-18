@@ -4,8 +4,8 @@ A two-page Power BI dashboard that analyses a B2B sales pipeline: how many deals
 
 > \*\*Practice project.\*\* Built on a public, fictitious dataset (Maven Analytics, \*CRM Sales Opportunities\*). It is not connected to any employer's data.
 
-!\[Overview page](docs/overview.png)
-!\[Team page](docs/team.png)
+overview.png
+team.png
 
 ## Business questions
 
